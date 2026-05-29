@@ -1,8 +1,8 @@
 import { PostCard } from "@/components/post-card";
 import { getAllPosts } from "@/lib/posts";
 
-export default function Home() {
-  const posts = getAllPosts();
+export default async function Home() {
+  const posts = await getAllPosts();
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">

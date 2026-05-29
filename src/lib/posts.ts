@@ -1,8 +1,5 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-
-const postsDirectory = path.join(process.cwd(), "content/posts");
+import type { Post as PrismaPost } from "@/generated/prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export type PostMeta = {
   slug: string;
@@ -16,55 +13,39 @@ export type Post = PostMeta & {
   content: string;
 };
 
-function parsePost(slug: string, fileContents: string): Post {
-  const { data, content } = matter(fileContents);
-  const date =
-    data.date instanceof Date
-      ? data.date.toISOString().slice(0, 10)
-      : String(data.date);
+function toDateString(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
 
+function toMeta(post: PrismaPost): PostMeta {
   return {
-    slug,
-    title: data.title as string,
-    description: data.description as string,
-    date,
-    tags: (data.tags as string[]) ?? [],
-    content,
+    slug: post.slug,
+    title: post.title,
+    description: post.description,
+    date: toDateString(post.date),
+    tags: (post.tags as string[]) ?? [],
   };
 }
 
-export function getAllPosts(): PostMeta[] {
-  const fileNames = fs.readdirSync(postsDirectory);
+export async function getAllPosts(): Promise<PostMeta[]> {
+  const posts = await prisma.post.findMany({
+    orderBy: { date: "desc" },
+  });
 
-  return fileNames
-    .filter((fileName) => fileName.endsWith(".md"))
-    .map((fileName) => {
-      const slug = fileName.replace(/\.md$/, "");
-      const fileContents = fs.readFileSync(
-        path.join(postsDirectory, fileName),
-        "utf8",
-      );
-      const { title, description, date, tags } = parsePost(slug, fileContents);
-
-      return { slug, title, description, date, tags };
-    })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+  return posts.map(toMeta);
 }
 
-export function getPostBySlug(slug: string): Post | null {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  const post = await prisma.post.findUnique({ where: { slug } });
 
-  if (!fs.existsSync(fullPath)) {
+  if (!post) {
     return null;
   }
 
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  return parsePost(slug, fileContents);
+  return { ...toMeta(post), content: post.content };
 }
 
-export function getAllSlugs(): string[] {
-  return fs
-    .readdirSync(postsDirectory)
-    .filter((fileName) => fileName.endsWith(".md"))
-    .map((fileName) => fileName.replace(/\.md$/, ""));
+export async function getAllSlugs(): Promise<string[]> {
+  const posts = await prisma.post.findMany({ select: { slug: true } });
+  return posts.map((post) => post.slug);
 }
