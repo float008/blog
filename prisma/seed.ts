@@ -2,10 +2,10 @@ import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL as string);
+const adapter = new PrismaPg(process.env.DATABASE_URL as string);
 const prisma = new PrismaClient({ adapter });
 const postsDirectory = path.join(process.cwd(), "content/posts");
 
