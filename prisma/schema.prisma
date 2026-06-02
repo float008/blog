@@ -13,10 +13,12 @@ model Post {
   title       String
   description String   @db.Text
   date        DateTime @db.Date
+  locale      String   @default("zh")
   tags        Json
   content     String   @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([date])
+  @@index([locale])
 }

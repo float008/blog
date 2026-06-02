@@ -1,0 +1,22 @@
+{
+  "posts": [
+    {
+      "slug": "hello-world",
+      "title": "Hello World",
+      "description": "欢迎来到我的博客，这是第一篇文章。",
+      "date": "2026-05-29",
+      "locale": "zh",
+      "tags": ["随笔"],
+      "content": "你好，世界！\n\n这是使用 **Next.js**、**Tailwind CSS** 和 **shadcn/ui** 搭建的博客项目。\n\n## 特性\n\n- App Router 路由\n- Markdown 文章\n- 响应式布局\n- 组件化 UI\n\n开始写作吧。"
+    },
+    {
+      "slug": "getting-started-with-nextjs",
+      "title": "Next.js 入门指南",
+      "description": "快速了解 Next.js App Router 的核心概念。",
+      "date": "2026-05-28",
+      "locale": "zh",
+      "tags": ["Next.js", "教程"],
+      "content": "Next.js 是一个基于 React 的全栈框架，适合构建博客、官网和 Web 应用。\n\n## App Router\n\nApp Router 使用 `app` 目录组织路由，每个文件夹对应一个 URL 路径。\n\n## 服务端组件\n\n默认情况下，组件在服务端渲染，可以减少客户端 JavaScript 体积，提升首屏性能。\n\n## 静态生成\n\n博客文章可以在构建时预渲染，部署后访问速度更快。\n\n```tsx\nexport default function Page() {\n  return <h1>Hello Blog</h1>;\n}\n```\n\n继续探索，构建属于你的博客吧。"
+    }
+  ]
+}

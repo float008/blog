@@ -2,6 +2,7 @@
 title: Next.js 入门指南
 description: 快速了解 Next.js App Router 的核心概念。
 date: 2026-05-28
+locale: zh
 tags: [Next.js, 教程]
 ---
 

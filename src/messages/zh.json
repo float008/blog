@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "home": "首页",
+    "about": "关于",
+    "posts": "文章",
+    "tags": "标签"
+  },
+  "cta": {
+    "learnMore": "了解更多",
+    "downloadResume": "下载简历",
+    "viewAbout": "查看介绍",
+    "backHome": "返回首页",
+    "readPosts": "阅读文章"
+  },
+  "home": {
+    "latestPosts": "最新文章",
+    "emptyPosts": "暂无文章，开始写作吧。"
+  },
+  "about": {
+    "title": "关于",
+    "introTitle": "自我介绍",
+    "techStackTitle": "技术栈",
+    "projectsTitle": "项目亮点",
+    "blogTitle": "博客",
+    "blogDesc": "这里是我的技术文章，记录实践与思考。",
+    "contactTitle": "联系",
+    "lookingFor": "期望岗位",
+    "emailCopy": "复制邮箱",
+    "emailCopied": "已复制"
+  },
+  "post": {
+    "minRead": "分钟阅读",
+    "authorCardTitle": "关于作者",
+    "authorCardDesc": "更多背景与技术栈，欢迎查看介绍页。",
+    "localeBadge": "中文"
+  },
+  "footer": {
+    "rights": "保留所有权利"
+  },
+  "theme": {
+    "toggle": "切换主题",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "locale": {
+    "switch": "切换语言"
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "description": "你访问的页面不存在。",
+    "backHome": "返回首页"
+  }
+}

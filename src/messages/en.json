@@ -1,0 +1,54 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "posts": "Posts",
+    "tags": "Tags"
+  },
+  "cta": {
+    "learnMore": "Learn more",
+    "downloadResume": "Resume",
+    "viewAbout": "About me",
+    "backHome": "Back home",
+    "readPosts": "Read posts"
+  },
+  "home": {
+    "latestPosts": "Latest posts",
+    "emptyPosts": "No posts yet. Start writing!"
+  },
+  "about": {
+    "title": "About",
+    "introTitle": "Introduction",
+    "techStackTitle": "Tech stack",
+    "projectsTitle": "Highlighted projects",
+    "blogTitle": "Blog",
+    "blogDesc": "Technical articles documenting my practice and thinking.",
+    "contactTitle": "Contact",
+    "lookingFor": "Looking for",
+    "emailCopy": "Copy email",
+    "emailCopied": "Copied"
+  },
+  "post": {
+    "minRead": "min read",
+    "authorCardTitle": "About the author",
+    "authorCardDesc": "Background, skills, and more on the about page.",
+    "localeBadge": "EN"
+  },
+  "footer": {
+    "rights": "All rights reserved"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "locale": {
+    "switch": "Switch language"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist.",
+    "backHome": "Back home"
+  }
+}

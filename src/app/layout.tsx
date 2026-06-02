@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Figtree } from "next/font/google";
-import { SiteHeader } from "@/components/site-header";
+import { Geist, Geist_Mono, Noto_Serif_SC } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
+const notoSerif = Noto_Serif_SC({
+  weight: ["600", "700"],
+  variable: "--font-heading",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,10 +21,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Blog",
-    template: "%s | Blog",
+    default: "Deniro Tong",
+    template: "%s | Deniro Tong",
   },
-  description: "基于 Next.js、Tailwind CSS 和 shadcn/ui 的个人博客",
+  description: "Frontend engineer · Personal blog and portfolio",
 };
 
 export default function RootLayout({
@@ -32,11 +35,23 @@ export default function RootLayout({
   return (
     <html
       lang="zh-CN"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", figtree.variable)}
+      suppressHydrationWarning
+      className={cn(
+        "h-full antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        notoSerif.variable,
+      )}
     >
-      <body className="min-h-full flex flex-col">
-        <SiteHeader />
-        {children}
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('blog-theme');var d=t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})()`,
+          }}
+        />
+      </head>
+      <body className="min-h-full flex flex-col font-sans">
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
