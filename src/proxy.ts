@@ -11,9 +11,3 @@ export const config = {
   // files with an extension (so /admin stays outside i18n locale redirects).
   matcher: "/((?!api|admin|_next|_vercel|.*\\..*).*)",
 };
-
-// GITHUB_ID=Ov23lisUMGII3rGpDKyv
-// GITHUB_SECRET=51f698dd248302247e15fb67ce24b1d5ffc66472
-// NEXTAUTH_SECRET=1uuGnz6Fts5IXCichBurKKpVgIJZim3ooqDiWaU9/cQ=
-// NEXTAUTH_URL=http://localhost:3000
-// ADMIN_GITHUB_LOGIN=float008

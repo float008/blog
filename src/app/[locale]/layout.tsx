@@ -8,7 +8,7 @@ import { SiteHeader } from "@/components/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { routing } from "@/i18n/routing";
 import { fontVariables } from "@/lib/fonts";
-import { siteConfig } from "@/lib/site-config";
+import { pickLocale, siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import "../globals.css";
 
@@ -16,20 +16,31 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
-  title: {
-    default: `${siteConfig.name} · ${siteConfig.title}`,
-    template: `%s | ${siteConfig.brand}`,
-  },
-  description: siteConfig.bio,
-  openGraph: {
-    type: "website",
-    title: `${siteConfig.name} · ${siteConfig.title}`,
-    description: siteConfig.bio,
-    url: siteConfig.url,
-  },
-};
+// metadata 改为按 locale 动态生成，保证 <title>/OG/description 也会随语言切换
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const name = pickLocale(siteConfig.name, locale);
+  const title = pickLocale(siteConfig.title, locale);
+  const bio = pickLocale(siteConfig.bio, locale);
+  return {
+    metadataBase: new URL(siteConfig.url),
+    title: {
+      default: `${name} · ${title}`,
+      template: `%s | ${siteConfig.brand}`,
+    },
+    description: bio,
+    openGraph: {
+      type: "website",
+      title: `${name} · ${title}`,
+      description: bio,
+      url: siteConfig.url,
+    },
+  };
+}
 
 export default async function LocaleLayout({
   children,

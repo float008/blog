@@ -1,14 +1,15 @@
 import { ArrowRight, FileText } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Stagger, StaggerItem } from "@/components/motion/primitives";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
-import { siteConfig } from "@/lib/site-config";
+import { pickLocale, siteConfig } from "@/lib/site-config";
 
 export async function Hero() {
   const t = await getTranslations("home");
   const tAbout = await getTranslations("about");
+  const locale = await getLocale();
 
   return (
     <section className="relative overflow-hidden border-b">
@@ -24,18 +25,18 @@ export async function Hero() {
         <StaggerItem className="mt-2">
           <h1 className="font-heading text-5xl font-extrabold tracking-tight sm:text-6xl">
             <span className="text-gradient text-gradient-shimmer">
-              {siteConfig.name}
+              {pickLocale(siteConfig.name, locale)}
             </span>
           </h1>
         </StaggerItem>
         <StaggerItem className="mt-3">
           <p className="text-xl font-medium text-foreground sm:text-2xl">
-            {siteConfig.title}
+            {pickLocale(siteConfig.title, locale)}
           </p>
         </StaggerItem>
         <StaggerItem className="mt-6">
           <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {siteConfig.tagline}
+            {pickLocale(siteConfig.tagline, locale)}
           </p>
         </StaggerItem>
         <StaggerItem className="mt-8 flex flex-wrap items-center gap-3">
