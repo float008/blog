@@ -42,12 +42,19 @@ function Button({
   className,
   variant = "default",
   size = "default",
+  render,
+  nativeButton,
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+  // 当通过 render 替换为非 <button>（如 Link、<a>）时，Base UI 默认的
+  // nativeButton=true 会触发可访问性告警，这里按是否传 render 智能切换，
+  // 调用方仍可显式覆盖。
   return (
     <ButtonPrimitive
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      render={render}
+      nativeButton={nativeButton ?? render === undefined}
       {...props}
     />
   )

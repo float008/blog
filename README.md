@@ -7,31 +7,23 @@
 - [Next.js](https://nextjs.org/) — App Router
 - [Tailwind CSS](https://tailwindcss.com/) — 样式
 - [shadcn/ui](https://ui.shadcn.com/) — UI 组件
-- Markdown — 文章内容
+- [Prisma](https://www.prisma.io/) + PostgreSQL — 文章数据
 
 ## 开发
 
 ```bash
 npm install
+npm run db:generate   # 生成 Prisma Client
 npm run dev
 ```
 
 访问 [http://localhost:3000](http://localhost:3000) 查看博客。
 
+数据库连接通过 `.env` 中的 `DATABASE_URL` 配置（PostgreSQL）。
+
 ## 写文章
 
-在 `content/posts/` 目录下新建 `.md` 文件，使用 frontmatter 定义元信息：
-
-```md
----
-title: 文章标题
-description: 文章摘要
-date: 2026-05-29
-tags: [标签1, 标签2]
----
-
-正文内容...
-```
+登录 `/admin` 后台，通过编辑器新建、编辑或删除文章，数据直接读写 PostgreSQL。
 
 ## 构建
 

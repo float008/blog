@@ -10,7 +10,6 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
-    "db:seed": "prisma db seed",
     "db:studio": "prisma studio"
   },
   "dependencies": {
@@ -25,7 +24,6 @@
     "code-inspector-plugin": "^1.5.1",
     "dotenv": "^17.4.2",
     "github-slugger": "^2.0.0",
-    "gray-matter": "^4.0.3",
     "lucide-react": "^1.17.0",
     "motion": "^12.40.0",
     "next": "16.2.6",
