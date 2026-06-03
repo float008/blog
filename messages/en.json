@@ -25,14 +25,16 @@
     "basicInfo": "Basic Info",
     "techStack": "Tech Stack",
     "experience": "Experience",
-    "contactTitle": "Hiring or want to collaborate?",
-    "contactSubtitle": "Feel free to reach out through any of the channels below.",
+    "education": "Education",
+    "contactTitle": "Get in touch",
+    "contactSubtitle": "Feel free to reach me through any of the channels below.",
     "viewResume": "View résumé",
     "sendEmail": "Send email",
     "location": "Location",
+    "contact": "Contact",
     "yearsOfExperience": "Years of experience",
-    "currentRole": "Current role",
-    "openToWork": "Open to work"
+    "yearsValue": "{years} yrs",
+    "currentRole": "Current role"
   },
   "tags": {
     "title": "Tags",

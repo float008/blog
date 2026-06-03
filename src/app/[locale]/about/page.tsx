@@ -1,12 +1,29 @@
 import type { Metadata } from "next";
-import { FileText, Mail } from "lucide-react";
+import {
+  GithubIcon,
+  GlobalIcon,
+  Linkedin01Icon,
+  MailIcon,
+  NewTwitterIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { FileText } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/primitives";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { siteConfig } from "@/lib/site-config";
+import { siteConfig, type TimelineItem } from "@/lib/site-config";
+
+const SOCIAL_ICONS = {
+  github: GithubIcon,
+  mail: MailIcon,
+  linkedin: Linkedin01Icon,
+  twitter: NewTwitterIcon,
+  globe: GlobalIcon,
+} as const;
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -41,7 +58,7 @@ export default async function AboutPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
       {/* Header */}
-      <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+      <Reveal className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
         <Avatar className="size-20 ring-2 ring-primary/20">
           <AvatarImage src="/avatar.jpg" alt={siteConfig.name} />
           <AvatarFallback className="bg-primary/10 text-xl text-primary">
@@ -56,93 +73,105 @@ export default async function AboutPage({ params }: Props) {
             {siteConfig.title}
           </p>
         </div>
-      </div>
+      </Reveal>
 
-      <p className="mt-8 text-base leading-relaxed text-muted-foreground">
+      <Reveal
+        delay={0.05}
+        className="mt-8 text-base leading-relaxed text-muted-foreground"
+      >
         {siteConfig.bio}
-      </p>
+      </Reveal>
 
       {/* Basic info */}
-      <h2 className="mt-12 font-heading text-xl font-bold">{t("basicInfo")}</h2>
-      <Card className="mt-4">
+      <Reveal className="mt-12">
+        <h2 className="font-heading text-xl font-bold">{t("basicInfo")}</h2>
+        <Card className="mt-4">
         <CardContent className="grid gap-4 sm:grid-cols-2">
           <InfoRow label={t("location")} value={siteConfig.location} />
           <InfoRow
             label={t("yearsOfExperience")}
-            value={siteConfig.yearsOfExperience}
+            value={t("yearsValue", { years: siteConfig.yearsOfExperience })}
           />
           <InfoRow label={t("currentRole")} value={siteConfig.title} />
-          {siteConfig.openToWork && (
-            <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground">
-                {t("currentRole")}
-              </span>
-              <span className="mt-1 inline-flex w-fit items-center gap-2 text-sm font-medium text-primary">
-                <span className="size-1.5 animate-pulse rounded-full bg-primary" />
-                {t("openToWork")}
-              </span>
+          <div className="flex flex-col sm:col-span-2">
+            <span className="text-xs text-muted-foreground">{t("contact")}</span>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {siteConfig.socials.map((social) => (
+                <Button
+                  key={social.label}
+                  variant="outline"
+                  size="sm"
+                  render={
+                    <a
+                      href={social.href}
+                      target={
+                        social.href.startsWith("http") ? "_blank" : undefined
+                      }
+                      rel="noreferrer"
+                    />
+                  }
+                >
+                  <HugeiconsIcon icon={SOCIAL_ICONS[social.icon]} size={16} />
+                  {social.label}
+                </Button>
+              ))}
+              {siteConfig.resumeUrl && (
+                <Button
+                  size="sm"
+                  render={
+                    <a
+                      href={siteConfig.resumeUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    />
+                  }
+                >
+                  <FileText className="size-4" />
+                  {t("viewResume")}
+                </Button>
+              )}
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </div>
+          </CardContent>
+        </Card>
+      </Reveal>
+
+      {/* Experience */}
+      <Reveal className="mt-12">
+        <h2 className="font-heading text-xl font-bold">{t("experience")}</h2>
+        <Timeline items={siteConfig.experience} className="mt-4" />
+      </Reveal>
+
+      {/* Education */}
+      <Reveal className="mt-12">
+        <h2 className="font-heading text-xl font-bold">{t("education")}</h2>
+        <Timeline items={siteConfig.education} className="mt-4" />
+      </Reveal>
 
       {/* Tech stack */}
-      <h2 className="mt-12 font-heading text-xl font-bold">{t("techStack")}</h2>
-      <div className="mt-4 space-y-6">
-        {siteConfig.skills.map((group, i) => (
-          <div key={group.category}>
-            <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <span
-                className="size-2 rounded-full"
-                style={{ background: DOT_COLORS[i % DOT_COLORS.length] }}
-              />
-              {group.category}
-            </h3>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {group.items.map((item) => (
-                <Badge key={item} variant="outline" className="h-7 px-3">
-                  {item}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Contact CTA */}
-      <Card className="mt-12 border-primary/20 bg-primary/5">
-        <CardContent className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-heading text-lg font-bold">
-              {t("contactTitle")}
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t("contactSubtitle")}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button render={<a href={`mailto:${siteConfig.email}`} />}>
-              <Mail className="size-4" />
-              {t("sendEmail")}
-            </Button>
-            {siteConfig.resumeUrl && (
-              <Button
-                variant="outline"
-                render={
-                  <a
-                    href={siteConfig.resumeUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  />
-                }
-              >
-                <FileText className="size-4" />
-                {t("viewResume")}
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      <Reveal className="mt-12">
+        <h2 className="font-heading text-xl font-bold">{t("techStack")}</h2>
+        <Stagger stagger={0.1} className="mt-4 space-y-6">
+          {siteConfig.skills.map((group, i) => (
+            <StaggerItem key={group.category}>
+              <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <span
+                  className="size-2 rounded-full"
+                  style={{ background: DOT_COLORS[i % DOT_COLORS.length] }}
+                />
+                {group.category}
+              </h3>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <Badge key={item} variant="outline" className="h-7 px-3">
+                    {item}
+                  </Badge>
+                ))}
+              </div>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </Reveal>
     </div>
   );
 }
@@ -153,5 +182,36 @@ function InfoRow({ label, value }: { label: string; value: string }) {
       <span className="text-xs text-muted-foreground">{label}</span>
       <span className="mt-1 text-sm font-medium text-foreground">{value}</span>
     </div>
+  );
+}
+
+function Timeline({
+  items,
+  className,
+}: {
+  items: readonly TimelineItem[];
+  className?: string;
+}) {
+  return (
+    <Stagger
+      as="ol"
+      stagger={0.1}
+      className={`relative border-l border-border ${className ?? ""}`}
+    >
+      {items.map((item) => (
+        <StaggerItem
+          as="li"
+          key={`${item.period}-${item.title}`}
+          className="relative py-3 pl-6"
+        >
+          <span className="absolute top-[1.15rem] -left-[5px] size-2.5 rounded-full bg-primary ring-4 ring-background" />
+          <p className="font-mono text-xs text-muted-foreground">
+            {item.period}
+          </p>
+          <p className="mt-0.5 font-medium text-foreground">{item.title}</p>
+          <p className="text-sm text-muted-foreground">{item.subtitle}</p>
+        </StaggerItem>
+      ))}
+    </Stagger>
   );
 }

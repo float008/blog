@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/primitives";
 import { Link } from "@/i18n/navigation";
 import { getAllPosts, getPostsGroupedByYear } from "@/lib/posts";
 
@@ -23,18 +24,18 @@ export default async function ArchivePage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
-      <header className="mb-12">
+      <Reveal as="header" className="mb-12">
         <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
           {t("title")}
         </h1>
         <p className="mt-2 text-muted-foreground">
           {t("subtitle")} · {t("totalPosts", { count: all.length })}
         </p>
-      </header>
+      </Reveal>
 
       <div className="space-y-12">
         {groups.map((group) => (
-          <section key={group.year}>
+          <Reveal as="section" key={group.year}>
             <div className="mb-4 flex items-baseline gap-3">
               <h2 className="font-heading text-2xl font-bold text-gradient">
                 {group.year}
@@ -43,9 +44,13 @@ export default async function ArchivePage({ params }: Props) {
                 {t("postsInYear", { count: group.posts.length })}
               </span>
             </div>
-            <ul className="space-y-1 border-l border-border">
+            <Stagger
+              as="ul"
+              stagger={0.05}
+              className="space-y-1 border-l border-border"
+            >
               {group.posts.map((post) => (
-                <li key={post.slug}>
+                <StaggerItem as="li" key={post.slug}>
                   <Link
                     href={`/blog/${post.slug}`}
                     className="group -ml-px flex flex-col gap-1 border-l-2 border-transparent py-2 pl-4 transition-colors hover:border-primary sm:flex-row sm:items-baseline sm:gap-4"
@@ -60,10 +65,10 @@ export default async function ArchivePage({ params }: Props) {
                       {post.title}
                     </span>
                   </Link>
-                </li>
+                </StaggerItem>
               ))}
-            </ul>
-          </section>
+            </Stagger>
+          </Reveal>
         ))}
       </div>
     </div>

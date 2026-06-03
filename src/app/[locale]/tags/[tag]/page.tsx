@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { Reveal, Stagger } from "@/components/motion/primitives";
 import { PostCard } from "@/components/post-card";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -46,20 +47,20 @@ export default async function TagPage({ params }: Props) {
         {t("backToTags")}
       </Link>
 
-      <header className="mb-10">
+      <Reveal as="header" className="mb-10">
         <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
           <span className="text-gradient">{decodedTag}</span>
         </h1>
         <p className="mt-2 text-muted-foreground">
           {t("postsInTag", { count: posts.length })}
         </p>
-      </header>
+      </Reveal>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <Stagger className="grid gap-4 sm:grid-cols-2">
         {posts.map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}
-      </div>
+      </Stagger>
     </div>
   );
 }

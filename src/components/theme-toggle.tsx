@@ -1,6 +1,7 @@
 "use client";
 
 import { Monitor, Moon, Sun } from "lucide-react";
+import { motion } from "motion/react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 
@@ -26,8 +27,15 @@ export function ThemeToggle() {
           <Button variant="ghost" size="icon" aria-label={t("toggleTheme")} />
         }
       >
-        <Sun className="size-4 dark:hidden" />
-        <Moon className="hidden size-4 dark:block" />
+        <motion.span
+          className="flex"
+          whileHover={{ rotate: 15 }}
+          whileTap={{ rotate: -30, scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 15 }}
+        >
+          <Sun className="size-4 dark:hidden" />
+          <Moon className="hidden size-4 dark:block" />
+        </motion.span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuRadioGroup

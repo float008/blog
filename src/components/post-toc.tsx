@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 
 import type { TocItem } from "@/lib/toc";
@@ -44,7 +45,18 @@ export function PostToc({ items }: PostTocProps) {
       </p>
       <ul className="space-y-2 border-l border-border">
         {items.map((item) => (
-          <li key={item.id} style={{ paddingLeft: (item.depth - 2) * 12 }}>
+          <li
+            key={item.id}
+            className="relative"
+            style={{ paddingLeft: (item.depth - 2) * 12 }}
+          >
+            {activeId === item.id && (
+              <motion.span
+                layoutId="toc-active"
+                className="absolute top-0 -left-px h-full w-0.5 rounded bg-primary"
+                transition={{ type: "spring", stiffness: 400, damping: 35 }}
+              />
+            )}
             <a
               href={`#${item.id}`}
               onClick={(e) => {
@@ -55,9 +67,8 @@ export function PostToc({ items }: PostTocProps) {
                 history.replaceState(null, "", `#${item.id}`);
               }}
               className={cn(
-                "-ml-px block border-l-2 border-transparent pl-3 text-muted-foreground transition-colors hover:text-foreground",
-                activeId === item.id &&
-                  "border-primary font-medium text-primary",
+                "block pl-3 text-muted-foreground transition-colors hover:text-foreground",
+                activeId === item.id && "font-medium text-primary",
               )}
             >
               {item.text}

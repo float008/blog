@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { MarkdownContent } from "@/components/markdown-content";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/primitives";
 import { PostToc } from "@/components/post-toc";
 import { ReadingProgress } from "@/components/reading-progress";
 import { TagList } from "@/components/tag-list";
@@ -75,7 +76,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div className="gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_220px]">
           <article className="min-w-0">
-            <header className="space-y-4">
+            <Reveal as="header" className="space-y-4">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <time dateTime={post.date}>{post.date}</time>
                 <span aria-hidden>·</span>
@@ -88,46 +89,55 @@ export default async function BlogPostPage({ params }: Props) {
                 {post.description}
               </p>
               <TagList tags={post.tags} />
-            </header>
+            </Reveal>
 
             <Separator className="my-8" />
 
-            <MarkdownContent content={post.content} />
+            <Reveal delay={0.05}>
+              <MarkdownContent content={post.content} />
+            </Reveal>
 
             {/* Prev / next */}
             {(older || newer) && (
-              <nav className="mt-16 grid gap-4 border-t pt-8 sm:grid-cols-2">
+              <Stagger
+                as="nav"
+                className="mt-16 grid gap-4 border-t pt-8 sm:grid-cols-2"
+              >
                 {newer ? (
-                  <Link
-                    href={`/blog/${newer.slug}`}
-                    className="group rounded-xl border p-4 transition-colors hover:border-primary/40"
-                  >
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <ArrowLeft className="size-3" />
-                      {t("next")}
-                    </span>
-                    <span className="mt-1 block font-medium transition-colors group-hover:text-primary">
-                      {newer.title}
-                    </span>
-                  </Link>
+                  <StaggerItem hover>
+                    <Link
+                      href={`/blog/${newer.slug}`}
+                      className="group block rounded-xl border p-4 transition-colors hover:border-primary/40"
+                    >
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <ArrowLeft className="size-3" />
+                        {t("next")}
+                      </span>
+                      <span className="mt-1 block font-medium transition-colors group-hover:text-primary">
+                        {newer.title}
+                      </span>
+                    </Link>
+                  </StaggerItem>
                 ) : (
                   <span />
                 )}
                 {older && (
-                  <Link
-                    href={`/blog/${older.slug}`}
-                    className="group rounded-xl border p-4 text-right transition-colors hover:border-primary/40"
-                  >
-                    <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
-                      {t("previous")}
-                      <ArrowRight className="size-3" />
-                    </span>
-                    <span className="mt-1 block font-medium transition-colors group-hover:text-primary">
-                      {older.title}
-                    </span>
-                  </Link>
+                  <StaggerItem hover>
+                    <Link
+                      href={`/blog/${older.slug}`}
+                      className="group block rounded-xl border p-4 text-right transition-colors hover:border-primary/40"
+                    >
+                      <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
+                        {t("previous")}
+                        <ArrowRight className="size-3" />
+                      </span>
+                      <span className="mt-1 block font-medium transition-colors group-hover:text-primary">
+                        {older.title}
+                      </span>
+                    </Link>
+                  </StaggerItem>
                 )}
-              </nav>
+              </Stagger>
             )}
           </article>
 

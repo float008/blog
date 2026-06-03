@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Hero } from "@/components/hero";
+import { Reveal, Stagger } from "@/components/motion/primitives";
 import { PostCard } from "@/components/post-card";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -21,7 +22,7 @@ export default async function Home({
     <>
       <Hero />
       <section className="mx-auto max-w-5xl px-4 py-16">
-        <div className="mb-8 flex items-end justify-between gap-4">
+        <Reveal className="mb-8 flex items-end justify-between gap-4">
           <div>
             <h2 className="font-heading text-2xl font-bold tracking-tight">
               {t("recentTitle")}
@@ -34,14 +35,14 @@ export default async function Home({
             {t("viewArchive")}
             <ArrowRight className="size-4" />
           </Button>
-        </div>
+        </Reveal>
 
         {posts.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <Stagger className="grid gap-4 sm:grid-cols-2">
             {posts.map((post) => (
               <PostCard key={post.slug} post={post} />
             ))}
-          </div>
+          </Stagger>
         ) : (
           <p className="text-muted-foreground">{t("emptyPosts")}</p>
         )}

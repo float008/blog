@@ -25,14 +25,16 @@
     "basicInfo": "基本信息",
     "techStack": "技术栈",
     "experience": "工作经历",
-    "contactTitle": "想要合作或招聘？",
-    "contactSubtitle": "欢迎通过以下方式联系我。",
+    "education": "教育经历",
+    "contactTitle": "联系我",
+    "contactSubtitle": "欢迎通过以下方式找到我。",
     "viewResume": "查看简历",
     "sendEmail": "发送邮件",
     "location": "所在地",
+    "contact": "联系方式",
     "yearsOfExperience": "工作年限",
-    "currentRole": "当前职位",
-    "openToWork": "求职中"
+    "yearsValue": "{years} 年",
+    "currentRole": "当前职位"
   },
   "tags": {
     "title": "标签",

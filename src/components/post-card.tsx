@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
+import { StaggerItem } from "@/components/motion/primitives";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
@@ -13,7 +14,8 @@ export async function PostCard({ post }: PostCardProps) {
   const t = await getTranslations("post");
 
   return (
-    <Card className="group relative gap-3 transition-all hover:ring-primary/30 hover:shadow-md hover:shadow-primary/5">
+    <StaggerItem hover className="h-full">
+    <Card className="group relative h-full gap-3 transition-colors hover:ring-primary/30 hover:shadow-md hover:shadow-primary/5">
       <CardHeader className="gap-2">
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
           <time dateTime={post.date}>{post.date}</time>
@@ -44,5 +46,6 @@ export async function PostCard({ post }: PostCardProps) {
         </CardContent>
       )}
     </Card>
+    </StaggerItem>
   );
 }

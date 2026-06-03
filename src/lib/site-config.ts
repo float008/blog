@@ -20,52 +20,83 @@ export type SkillGroup = {
   items: string[];
 };
 
+export type TimelineItem = {
+  period: string;
+  title: string;
+  subtitle: string;
+};
+
 export const siteConfig = {
   /** Used for <title> default and metadataBase */
   name: "Your Name",
   /** Latin/handle shown on the logo */
   brand: "Blog",
   /** Job title / headline */
-  title: "Frontend Engineer",
+  title: "全栈开发工程师",
   /** One-line tagline for the hero (keep it punchy) */
-  tagline: "我做有温度的界面，也写经得起推敲的代码。",
+  tagline: "全栈偏前端，也懂点 AI。",
   /** Short bio paragraph for the About page */
-  bio: "拥有多年前端开发经验，专注于现代 Web 应用的体验与性能。熟悉 React / Next.js 生态，关注设计系统与工程化实践。目前正在寻找新的机会。",
+  bio: "全栈开发工程师，技术栈偏前端，熟悉 React / Next.js 生态；也了解一些 AI Agent 开发。",
   /** Deployed site URL — used for metadataBase / OG / canonical */
   url: "https://example.com",
-  email: "you@example.com",
+  email: "tongqing821@gmail.com",
   location: "China",
-  yearsOfExperience: "10+",
+  yearsOfExperience: "3",
   /** Link to your résumé (PDF or page). Leave empty to hide the CTA. */
   resumeUrl: "",
-  openToWork: true,
 
   socials: [
-    { label: "GitHub", href: "https://github.com/your-handle", icon: "github" },
-    { label: "Email", href: "mailto:you@example.com", icon: "mail" },
+    { label: "GitHub", href: "https://github.com/float008", icon: "github" },
+    { label: "Gmail", href: "mailto:tongqing821@gmail.com", icon: "mail" },
+    { label: "QQ 邮箱", href: "mailto:347282587@qq.com", icon: "mail" },
   ] satisfies SocialLink[],
+
+  /** Work experience, newest first */
+  experience: [
+    {
+      period: "2024.03 - 至今",
+      title: "Zenlayer",
+      subtitle: "全栈开发工程师",
+    },
+    {
+      period: "2022.11 - 2023.12",
+      title: "群核科技（酷家乐）",
+      subtitle: "前端开发工程师 · 施工图部门（实习）/ 平台研发部（正式）",
+    },
+    {
+      period: "2022.06 - 2022.10",
+      title: "联想 Tower PD 部门",
+      subtitle: "前端开发工程师（实习）",
+    },
+  ] satisfies TimelineItem[],
+
+  /** Education, newest first */
+  education: [
+    {
+      period: "2021 - 2023",
+      title: "江西财经大学",
+      subtitle: "计算机",
+    },
+    {
+      period: "2017 - 2021",
+      title: "延安大学",
+      subtitle: "化学",
+    },
+  ] satisfies TimelineItem[],
 
   /** Tech stack shown on the About page, grouped by category */
   skills: [
     {
-      category: "Languages",
-      items: ["TypeScript", "JavaScript", "HTML", "CSS"],
+      category: "Frontend",
+      items: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
     },
     {
-      category: "Frameworks",
-      items: ["React", "Next.js", "Vue", "Node.js"],
+      category: "Backend",
+      items: ["Node.js", "NestJS", "REST API"],
     },
     {
-      category: "Styling",
-      items: ["Tailwind CSS", "CSS Modules", "shadcn/ui"],
-    },
-    {
-      category: "Tooling",
-      items: ["Vite", "Turbopack", "Webpack", "Git", "Vitest"],
-    },
-    {
-      category: "Backend & Data",
-      items: ["Prisma", "PostgreSQL", "REST", "GraphQL"],
+      category: "AI",
+      items: ["RAG", "LangChain", "LangGraph", "DeepAgents"],
     },
   ] satisfies SkillGroup[],
 } as const;

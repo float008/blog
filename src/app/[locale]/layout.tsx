@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 
-import { SiteFooter } from "@/components/site-footer";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { routing } from "@/i18n/routing";
@@ -59,9 +59,10 @@ export default async function LocaleLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SiteHeader />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
+            <MotionProvider>
+              <SiteHeader />
+              <main className="flex-1">{children}</main>
+            </MotionProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

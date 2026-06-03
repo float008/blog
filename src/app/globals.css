@@ -149,6 +149,24 @@
   color: transparent;
 }
 
+@keyframes text-shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Slow flowing shimmer on the gradient title */
+@utility text-gradient-shimmer {
+  background-size: 200% auto;
+  animation: text-shimmer 5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-shimmer {
+    animation: none;
+  }
+}
+
 @utility bg-grid {
   background-image:
     linear-gradient(to right, var(--border) 1px, transparent 1px),

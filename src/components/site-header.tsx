@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 
 import { LocaleSwitcher } from "@/components/locale-switcher";
@@ -45,12 +46,19 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-sm transition-colors hover:bg-muted hover:text-foreground",
+                "relative rounded-lg px-3 py-1.5 text-sm transition-colors",
                 isActive(item.href)
-                  ? "font-medium text-foreground"
-                  : "text-muted-foreground",
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
+              {isActive(item.href) && (
+                <motion.span
+                  layoutId="nav-active"
+                  className="absolute inset-0 -z-10 rounded-lg bg-muted"
+                  transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                />
+              )}
               {t(item.key)}
             </Link>
           ))}
@@ -71,27 +79,36 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {open && (
-        <nav className="border-t md:hidden">
-          <div className="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-3">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={cn(
-                  "rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted",
-                  isActive(item.href)
-                    ? "font-medium text-foreground"
-                    : "text-muted-foreground",
-                )}
-              >
-                {t(item.key)}
-              </Link>
-            ))}
-          </div>
-        </nav>
-      )}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.nav
+            key="mobile-menu"
+            className="overflow-hidden border-t md:hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          >
+            <div className="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-3">
+              {NAV.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "rounded-lg px-3 py-2 text-sm transition-colors hover:bg-muted",
+                    isActive(item.href)
+                      ? "font-medium text-foreground"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {t(item.key)}
+                </Link>
+              ))}
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
