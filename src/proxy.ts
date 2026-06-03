@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 export default createMiddleware(routing);
 
 export const config = {
-  // Match all pathnames except API routes, Next internals and files with an extension
-  matcher: "/((?!api|_next|_vercel|.*\\..*).*)",
+  // Match all pathnames except API routes, the /admin area, Next internals and
+  // files with an extension (so /admin stays outside i18n locale redirects).
+  matcher: "/((?!api|admin|_next|_vercel|.*\\..*).*)",
 };

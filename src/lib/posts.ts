@@ -1,3 +1,5 @@
+import { promises as fs } from "node:fs";
+import path from "node:path";
 import { cache } from "react";
 
 export type PostMeta = {
@@ -18,7 +20,7 @@ export type YearGroup = { year: number; posts: PostMeta[] };
 export type AdjacentPosts = { older: PostMeta | null; newer: PostMeta | null };
 
 /** Normalized post shape, independent of the data source (DB or JSON mock). */
-type RawPost = {
+export type RawPost = {
   slug: string;
   title: string;
   description: string;
@@ -27,10 +29,11 @@ type RawPost = {
   content: string;
 };
 
-// Use the database when DATABASE_URL is configured; otherwise fall back to the
-// local JSON mock so the site runs without a running Postgres. The Prisma
-// setup (prisma.ts / schema.prisma / prisma.config.ts) is kept intact.
+// Use the database when DATABASE_URL is configured; otherwise read/write the
+// local JSON mock so the site (and the /admin editor) works without Postgres.
+// The Prisma setup (prisma.ts / schema.prisma) is kept intact for later.
 const USE_DB = Boolean(process.env.DATABASE_URL);
+const MOCK_PATH = path.join(process.cwd(), "content/posts.json");
 
 function toDateString(date: Date | string): string {
   return typeof date === "string"
@@ -54,14 +57,38 @@ export function getReadingTime(content: string): {
   return { minutes, words: cjk + latin };
 }
 
-/** Single source of truth — all queries derive from this (corpus is small). */
-const getRawPosts = cache(async (): Promise<RawPost[]> => {
-  let posts: RawPost[];
+function sortByDateDesc(posts: RawPost[]): RawPost[] {
+  return [...posts].sort((a, b) => (a.date < b.date ? 1 : -1));
+}
 
+// ---- JSON mock backend (read fresh from disk so admin writes are visible) ----
+
+async function readMockPosts(): Promise<RawPost[]> {
+  const raw = await fs.readFile(MOCK_PATH, "utf8");
+  const data = JSON.parse(raw) as RawPost[];
+  return data.map((post) => ({
+    ...post,
+    tags: post.tags ?? [],
+    date: toDateString(post.date),
+  }));
+}
+
+async function writeMockPosts(posts: RawPost[]): Promise<void> {
+  await fs.writeFile(
+    MOCK_PATH,
+    `${JSON.stringify(sortByDateDesc(posts), null, 2)}\n`,
+    "utf8",
+  );
+}
+
+// ---- Unified read source ----
+
+/** Single source of truth — all reads derive from this (corpus is small). */
+const getRawPosts = cache(async (): Promise<RawPost[]> => {
   if (USE_DB) {
     const { prisma } = await import("@/lib/prisma");
     const rows = await prisma.post.findMany({ orderBy: { date: "desc" } });
-    posts = rows.map((row) => ({
+    return rows.map((row) => ({
       slug: row.slug,
       title: row.title,
       description: row.description,
@@ -69,12 +96,8 @@ const getRawPosts = cache(async (): Promise<RawPost[]> => {
       tags: (row.tags as string[]) ?? [],
       content: row.content,
     }));
-  } else {
-    const data = (await import("../../content/posts.json")).default as RawPost[];
-    posts = data.map((post) => ({ ...post, date: toDateString(post.date) }));
   }
-
-  return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+  return sortByDateDesc(await readMockPosts());
 });
 
 function toMeta(post: RawPost): PostMeta {
@@ -156,4 +179,49 @@ export async function getAdjacentPosts(slug: string): Promise<AdjacentPosts> {
     newer: posts[index - 1] ?? null, // more recent
     older: posts[index + 1] ?? null, // older
   };
+}
+
+// ---- Write operations (used by the /admin editor) ----
+
+/** Create or update a post by slug. Switches between Postgres and the JSON mock. */
+export async function upsertPostRaw(
+  post: RawPost,
+  originalSlug?: string,
+): Promise<void> {
+  if (USE_DB) {
+    const { prisma } = await import("@/lib/prisma");
+    const data = {
+      title: post.title,
+      description: post.description,
+      date: new Date(post.date),
+      tags: post.tags,
+      content: post.content,
+    };
+    // Allow renaming the slug when editing.
+    const where = { slug: originalSlug ?? post.slug };
+    const existing = await prisma.post.findUnique({ where });
+    if (existing) {
+      await prisma.post.update({ where, data: { ...data, slug: post.slug } });
+    } else {
+      await prisma.post.create({ data: { ...data, slug: post.slug } });
+    }
+    return;
+  }
+
+  const posts = await readMockPosts();
+  const matchSlug = originalSlug ?? post.slug;
+  const idx = posts.findIndex((p) => p.slug === matchSlug);
+  if (idx >= 0) posts[idx] = post;
+  else posts.push(post);
+  await writeMockPosts(posts);
+}
+
+export async function deletePostRaw(slug: string): Promise<void> {
+  if (USE_DB) {
+    const { prisma } = await import("@/lib/prisma");
+    await prisma.post.delete({ where: { slug } });
+    return;
+  }
+  const posts = await readMockPosts();
+  await writeMockPosts(posts.filter((p) => p.slug !== slug));
 }
