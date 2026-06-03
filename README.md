@@ -1,33 +1,25 @@
 # Blog
 
-基于 Next.js、Tailwind CSS 和 shadcn/ui 搭建的个人博客。
+个人博客，中英双语，支持后台写文章。
 
 ## 技术栈
 
-- [Next.js](https://nextjs.org/) — App Router
-- [Tailwind CSS](https://tailwindcss.com/) — 样式
-- [shadcn/ui](https://ui.shadcn.com/) — UI 组件
-- [Prisma](https://www.prisma.io/) + PostgreSQL — 文章数据
+Next.js 16 · React 19 · TypeScript · Tailwind CSS · shadcn/ui · next-intl · NextAuth · Prisma + PostgreSQL
 
 ## 开发
 
 ```bash
 npm install
-npm run db:generate   # 生成 Prisma Client
+npm run db:generate
 npm run dev
 ```
 
-访问 [http://localhost:3000](http://localhost:3000) 查看博客。
-
-数据库连接通过 `.env` 中的 `DATABASE_URL` 配置（PostgreSQL）。
+需要在 `.env` 配置 `DATABASE_URL`、GitHub OAuth 和 `ADMIN_GITHUB_LOGIN`。
 
 ## 写文章
 
-登录 `/admin` 后台，通过编辑器新建、编辑或删除文章，数据直接读写 PostgreSQL。
+登录 `/admin`（GitHub OAuth），在后台新建、编辑、删除文章。
 
-## 构建
+## 个人信息
 
-```bash
-npm run build
-npm start
-```
+About 页内容在 `src/lib/site-config.ts` 修改。
