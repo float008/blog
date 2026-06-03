@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "hello-world",
+    "title": "Hello World",
+    "description": "欢迎来到我的博客，这是第一篇文章。",
+    "date": "2026-05-29",
+    "tags": ["随笔"],
+    "content": "你好，世界！\n\n这是使用 **Next.js**、**Tailwind CSS** 和 **shadcn/ui** 搭建的博客项目。\n\n## 特性\n\n- 现代化的视觉设计\n- 中英文双语切换\n- 亮暗模式\n- 文章目录与阅读进度\n\n## 接下来\n\n我会在这里记录技术思考与实践，欢迎常来看看。"
+  },
+  {
+    "slug": "getting-started-with-nextjs",
+    "title": "Next.js 入门指南",
+    "description": "快速了解 Next.js App Router 的核心概念。",
+    "date": "2026-05-28",
+    "tags": ["Next.js", "教程"],
+    "content": "Next.js 是一个基于 React 的全栈框架，适合构建博客、官网和 Web 应用。\n\n## App Router\n\nApp Router 使用 `app` 目录组织路由，每个文件夹对应一个 URL 路径。\n\n## 服务端组件\n\n默认情况下，`app` 目录中的组件都是服务端组件，可以直接读取数据：\n\n```tsx\nexport default async function Page() {\n  const posts = await getPosts();\n  return <PostList posts={posts} />;\n}\n```\n\n## 数据获取\n\n在服务端组件里可以直接 `await` 异步函数，无需 `getServerSideProps`。"
+  },
+  {
+    "slug": "understanding-react-server-components",
+    "title": "深入理解 React Server Components",
+    "description": "RSC 改变了我们组织前端代码的方式，本文梳理它的核心心智模型。",
+    "date": "2026-04-10",
+    "tags": ["React", "前端"],
+    "content": "React Server Components（RSC）让组件可以在服务端渲染并直接访问后端资源。\n\n## 为什么需要 RSC\n\n传统 SPA 把所有逻辑放到客户端，导致首屏慢、包体大。RSC 把不需要交互的部分留在服务端。\n\n## 服务端 vs 客户端\n\n- **服务端组件**：可以 `async`、直接查库，不进入客户端包。\n- **客户端组件**：用 `\"use client\"` 标记，可使用 `useState`、事件等。\n\n```tsx\n\"use client\";\nimport { useState } from \"react\";\n\nexport function Counter() {\n  const [n, setN] = useState(0);\n  return <button onClick={() => setN(n + 1)}>{n}</button>;\n}\n```\n\n## 边界规则\n\n服务端传给客户端组件的 props 必须可序列化，`Date` 要先转成字符串。\n\n## 小结\n\nRSC 不是银弹，但它给了我们更细的粒度去平衡性能与交互。"
+  },
+  {
+    "slug": "design-system-with-tailwind-v4",
+    "title": "用 Tailwind CSS v4 打造设计系统",
+    "description": "Tailwind v4 用 CSS 变量与 @theme 重新定义了主题，本文分享落地经验。",
+    "date": "2025-12-15",
+    "tags": ["CSS", "Tailwind", "前端"],
+    "content": "Tailwind CSS v4 抛弃了 `tailwind.config.js`，改为在 CSS 中用 `@theme` 声明设计令牌。\n\n## 主题令牌\n\n```css\n@theme inline {\n  --color-primary: oklch(0.55 0.22 264);\n  --font-heading: var(--font-display);\n}\n```\n\n## OKLCH 颜色\n\n相比 HSL，OKLCH 在感知上更均匀，做亮暗模式时过渡更自然。\n\n## 暗色模式\n\n通过 `@custom-variant dark` 配合 `.dark` 类即可切换，无需额外配置。\n\n## 经验\n\n把品牌色注入 `--primary`，shadcn 的按钮、徽章会自动跟随，改一处即可全局生效。"
+  },
+  {
+    "slug": "typescript-type-gymnastics",
+    "title": "TypeScript 类型体操入门",
+    "description": "从泛型到条件类型，循序渐进地理解 TypeScript 的类型编程。",
+    "date": "2025-08-20",
+    "tags": ["TypeScript", "教程"],
+    "content": "类型体操（Type Gymnastics）指用 TypeScript 类型系统做复杂的类型推导。\n\n## 泛型\n\n```ts\nfunction identity<T>(value: T): T {\n  return value;\n}\n```\n\n## 条件类型\n\n```ts\ntype IsString<T> = T extends string ? true : false;\n```\n\n## 映射类型\n\n```ts\ntype Partial<T> = { [K in keyof T]?: T[K] };\n```\n\n## 建议\n\n类型体操好玩，但生产代码中要克制——可读性优先。"
+  }
+]

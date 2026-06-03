@@ -1,0 +1,69 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "tags": "Tags",
+    "archive": "Archive",
+    "toggleTheme": "Toggle theme",
+    "toggleLanguage": "Toggle language",
+    "openMenu": "Open menu"
+  },
+  "home": {
+    "greeting": "Hi, I'm",
+    "featuredTitle": "Featured Posts",
+    "featuredSubtitle": "A few things I think are worth reading",
+    "recentTitle": "Latest Posts",
+    "recentSubtitle": "Ongoing notes on engineering and practice",
+    "viewAll": "View all",
+    "viewArchive": "Browse archive",
+    "readMore": "Read more",
+    "emptyPosts": "No posts yet — stay tuned."
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "My background and technical skills",
+    "basicInfo": "Basic Info",
+    "techStack": "Tech Stack",
+    "experience": "Experience",
+    "education": "Education",
+    "contactTitle": "Get in touch",
+    "contactSubtitle": "Feel free to reach me through any of the channels below.",
+    "viewResume": "View résumé",
+    "sendEmail": "Send email",
+    "location": "Location",
+    "contact": "Contact",
+    "yearsOfExperience": "Years of experience",
+    "yearsValue": "{years} yrs",
+    "currentRole": "Current role"
+  },
+  "tags": {
+    "title": "Tags",
+    "subtitle": "Browse all posts by topic",
+    "postsInTag": "{count, plural, =0 {No posts} =1 {# post} other {# posts}}",
+    "allTags": "All tags",
+    "backToTags": "Back to tags"
+  },
+  "archive": {
+    "title": "Archive",
+    "subtitle": "All posts in chronological order",
+    "totalPosts": "{count, plural, =0 {No posts} =1 {# post} other {# posts}}",
+    "postsInYear": "{count, plural, =1 {# post} other {# posts}}"
+  },
+  "post": {
+    "tableOfContents": "On this page",
+    "readingTime": "{minutes} min read",
+    "publishedOn": "Published on",
+    "previous": "Previous",
+    "next": "Next",
+    "backToHome": "Back to home",
+    "backToList": "Back to posts",
+    "notFound": "Post not found",
+    "relatedTags": "Tags"
+  },
+  "footer": {
+    "builtWith": "Built with Next.js, Tailwind CSS and shadcn/ui",
+    "rights": "All rights reserved",
+    "links": "Links",
+    "social": "Social"
+  }
+}

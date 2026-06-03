@@ -1,46 +1,51 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+
+import { StaggerItem } from "@/components/motion/primitives";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import type { PostMeta } from "@/lib/posts";
 
 type PostCardProps = {
   post: PostMeta;
 };
 
-export function PostCard({ post }: PostCardProps) {
+export async function PostCard({ post }: PostCardProps) {
+  const t = await getTranslations("post");
+
   return (
-    <Link href={`/blog/${post.slug}`} className="block">
-      <Card className="transition-colors hover:bg-muted/50">
-        <CardHeader>
-          <div className="flex items-center justify-between gap-4">
-            <CardTitle className="text-xl">{post.title}</CardTitle>
-            <time
-              dateTime={post.date}
-              className="shrink-0 text-sm text-muted-foreground"
-            >
-              {post.date}
-            </time>
-          </div>
-          <CardDescription>{post.description}</CardDescription>
-        </CardHeader>
-        {post.tags.length > 0 && (
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        )}
-      </Card>
-    </Link>
+    <StaggerItem hover className="h-full">
+    <Card className="group relative h-full gap-3 transition-colors hover:ring-primary/30 hover:shadow-md hover:shadow-primary/5">
+      <CardHeader className="gap-2">
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <time dateTime={post.date}>{post.date}</time>
+          <span aria-hidden>·</span>
+          <span>{t("readingTime", { minutes: post.readingMinutes })}</span>
+        </div>
+        <CardTitle className="text-xl transition-colors group-hover:text-primary">
+          {/* Stretched link makes the whole card clickable without nesting
+              anchors; tags below opt out with relative z-10. */}
+          <Link href={`/blog/${post.slug}`} className="after:absolute after:inset-0">
+            {post.title}
+          </Link>
+        </CardTitle>
+        <p className="text-sm text-muted-foreground">{post.description}</p>
+      </CardHeader>
+      {post.tags.length > 0 && (
+        <CardContent className="relative z-10 flex flex-wrap gap-2">
+          {post.tags.map((tag) => (
+            <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
+              <Badge
+                variant="secondary"
+                className="transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                {tag}
+              </Badge>
+            </Link>
+          ))}
+        </CardContent>
+      )}
+    </Card>
+    </StaggerItem>
   );
 }
