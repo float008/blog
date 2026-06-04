@@ -1,7 +1,8 @@
 import { ArrowRight, FileText } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { Stagger, StaggerItem } from "@/components/motion/primitives";
+import { FadeIn } from "@/components/motion/primitives";
+import { Typewriter, type TypewriterLine } from "@/components/typewriter";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/lib/site-config";
@@ -10,35 +11,37 @@ export async function Hero() {
   const t = await getTranslations("home");
   const tAbout = await getTranslations("about");
 
+  const lines: TypewriterLine[] = [
+    {
+      text: t("greeting"),
+      className: "text-lg text-muted-foreground",
+    },
+    {
+      text: siteConfig.name,
+      wrapperClassName: "mt-2",
+      className:
+        "font-heading text-5xl font-extrabold tracking-tight text-gradient sm:text-6xl",
+    },
+    {
+      text: siteConfig.title,
+      wrapperClassName: "mt-3",
+      className: "text-xl font-medium text-foreground sm:text-2xl",
+    },
+    {
+      text: siteConfig.tagline,
+      wrapperClassName: "mt-6 max-w-2xl",
+      className: "text-base leading-relaxed text-muted-foreground sm:text-lg",
+    },
+  ];
+
   return (
     <section className="relative overflow-hidden border-b">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-60" />
-      <Stagger
-        inView={false}
-        stagger={0.12}
-        className="mx-auto max-w-5xl px-4 py-20 sm:py-28"
-      >
-        <StaggerItem>
-          <p className="text-lg text-muted-foreground">{t("greeting")}</p>
-        </StaggerItem>
-        <StaggerItem className="mt-2">
-          <h1 className="font-heading text-5xl font-extrabold tracking-tight sm:text-6xl">
-            <span className="text-gradient text-gradient-shimmer">
-              {siteConfig.name}
-            </span>
-          </h1>
-        </StaggerItem>
-        <StaggerItem className="mt-3">
-          <p className="text-xl font-medium text-foreground sm:text-2xl">
-            {siteConfig.title}
-          </p>
-        </StaggerItem>
-        <StaggerItem className="mt-6">
-          <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {siteConfig.tagline}
-          </p>
-        </StaggerItem>
-        <StaggerItem className="mt-8 flex flex-wrap items-center gap-3">
+      <div className="mx-auto max-w-5xl px-4 py-20 sm:py-28">
+        <Typewriter lines={lines} />
+
+        {/* Buttons fade in after the intro starts typing */}
+        <FadeIn delay={1.6} className="mt-8 flex flex-wrap items-center gap-3">
           <Button size="lg" render={<Link href="/about" />}>
             {tAbout("title")}
             <ArrowRight className="size-4" />
@@ -55,8 +58,8 @@ export async function Hero() {
               {tAbout("viewResume")}
             </Button>
           )}
-        </StaggerItem>
-      </Stagger>
+        </FadeIn>
+      </div>
     </section>
   );
 }
