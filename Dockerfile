@@ -1,6 +1,6 @@
 # 运行时镜像：仅装载 Next.js standalone 构建产物
 # 完整的依赖安装与 next build 在 CI 中完成，这里只负责打包成最小可运行镜像
-FROM node:20-alpine AS runner
+FROM node:24-alpine AS runner
 
 WORKDIR /app
 
