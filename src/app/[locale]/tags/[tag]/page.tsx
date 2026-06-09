@@ -7,15 +7,13 @@ import { Reveal, Stagger } from "@/components/motion/primitives";
 import { PostCard } from "@/components/post-card";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
-import { getAllTagSlugs, getPostsByTag } from "@/lib/posts";
+import { getPostsByTag } from "@/lib/posts";
 import { cn } from "@/lib/utils";
 
-type Props = { params: Promise<{ locale: string; tag: string }> };
+// 数据来自数据库，避免 build 时连库；运行时按请求 SSR
+export const dynamic = "force-dynamic";
 
-export async function generateStaticParams() {
-  const tags = await getAllTagSlugs();
-  return tags.map((tag) => ({ tag }));
-}
+type Props = { params: Promise<{ locale: string; tag: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag } = await params;

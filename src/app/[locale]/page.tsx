@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getRecentPosts } from "@/lib/posts";
 
+// 数据来自数据库，避免 build 时连库；运行时按请求 SSR
+export const dynamic = "force-dynamic";
+
 export default async function Home({
   params,
 }: {

@@ -11,20 +11,14 @@ import { TagList } from "@/components/tag-list";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "@/i18n/navigation";
-import {
-  getAdjacentPosts,
-  getAllSlugs,
-  getPostBySlug,
-} from "@/lib/posts";
+import { getAdjacentPosts, getPostBySlug } from "@/lib/posts";
 import { extractToc } from "@/lib/toc";
 import { cn } from "@/lib/utils";
 
-type Props = { params: Promise<{ locale: string; slug: string }> };
+// 数据来自数据库，避免 build 时连库；运行时按请求 SSR
+export const dynamic = "force-dynamic";
 
-export async function generateStaticParams() {
-  const slugs = await getAllSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;

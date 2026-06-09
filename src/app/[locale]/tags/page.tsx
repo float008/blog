@@ -6,6 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import { getAllTags } from "@/lib/posts";
 
+// 数据来自数据库，避免 build 时连库；运行时按请求 SSR
+export const dynamic = "force-dynamic";
+
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
